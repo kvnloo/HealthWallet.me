@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "synthetic_only": true,
+    "source": "generated solely for HealthWallet interoperability verification",
+    "license": "CC0-1.0 intended for the fictional fixture",
+    "no_personal_data": true,
+    "creator": "OpenAI GPT-6 AI-assisted implementation, human review needed"
+  },
+  "observations": [
+    {
+      "resourceType": "Observation",
+      "id": "synthetic-glucose",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "2339-0",
+            "display": "Glucose [Mass/volume] in Blood"
+          }
+        ]
+      },
+      "effectiveDateTime": "2026-10-13T00:30:00+05:30",
+      "valueQuantity": {
+        "value": 88,
+        "unit": "mg/dL",
+        "system": "http://unitsofmeasure.org",
+        "code": "mg/dL"
+      },
+      "referenceRange": [
+        {
+          "low": {
+            "value": 70,
+            "unit": "mg/dL",
+            "system": "http://unitsofmeasure.org",
+            "code": "mg/dL"
+          },
+          "high": {
+            "value": 100,
+            "unit": "mg/dL",
+            "system": "http://unitsofmeasure.org",
+            "code": "mg/dL"
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "Observation",
+      "id": "synthetic-temperature",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "8310-5",
+            "display": "Body temperature"
+          }
+        ]
+      },
+      "effectiveDateTime": "2026-10-13T20:30:00-05:00",
+      "valueQuantity": {
+        "value": 37,
+        "unit": "Cel",
+        "system": "http://unitsofmeasure.org",
+        "code": "Cel"
+      },
+      "referenceRange": [
+        {
+          "low": {
+            "value": 36,
+            "unit": "Cel",
+            "system": "http://unitsofmeasure.org",
+            "code": "Cel"
+          },
+          "high": {
+            "value": 38,
+            "unit": "Cel",
+            "system": "http://unitsofmeasure.org",
+            "code": "Cel"
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "Observation",
+      "id": "synthetic-blood-pressure",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "55284-4",
+            "display": "Blood pressure systolic and diastolic"
+          }
+        ]
+      },
+      "effectiveDateTime": "2026-10-12T08:00:00+00:00",
+      "component": [
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8480-6",
+                "display": "Systolic blood pressure"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 118,
+            "unit": "mmHg",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        },
+        {
+          "code": {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "8462-4",
+                "display": "Diastolic blood pressure"
+              }
+            ]
+          },
+          "valueQuantity": {
+            "value": 78,
+            "unit": "mmHg",
+            "system": "http://unitsofmeasure.org",
+            "code": "mm[Hg]"
+          }
+        }
+      ]
+    },
+    {
+      "resourceType": "Observation",
+      "id": "synthetic-missing",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "29463-7",
+            "display": "Body Weight"
+          }
+        ]
+      },
+      "effectiveDateTime": "2026-10-12T09:00:00+00:00",
+      "dataAbsentReason": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+            "code": "unknown",
+            "display": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "synthetic-zero",
+      "status": "final",
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "72514-3",
+            "display": "Pain severity"
+          }
+        ]
+      },
+      "effectiveDateTime": "2026-10-12T09:30:00+00:00",
+      "valueQuantity": {
+        "value": 0,
+        "unit": "{score}",
+        "system": "http://unitsofmeasure.org",
+        "code": "{score}"
+      }
+    }
+  ]
+}
