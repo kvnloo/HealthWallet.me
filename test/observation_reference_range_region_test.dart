@@ -52,7 +52,7 @@ void main() {
           low: bound(70, 'mg/dL'),
           high: bound(100, 'mg/dL'),
         ),
-        'Reference Range: 3.89 - 5.55 mmol/L',
+        'Reference Range: 3.88 - 5.55 mmol/L',
       );
     });
 
@@ -96,7 +96,7 @@ void main() {
           low: bound(70, 'mg/dL'),
           high: bound(5.55, 'mmol/L'),
         ),
-        'Reference Range: 3.89 - 5.55 mmol/L',
+        'Reference Range: 3.88 - 5.55 mmol/L',
       );
     });
 
@@ -107,7 +107,7 @@ void main() {
           low: bound(70, 'mg/dL'),
           high: bound(6, 'unit-not-recognized'),
         ),
-        'Reference Range: 3.89 mmol/L - 6.00 unit-not-recognized',
+        'Reference Range: 3.88 mmol/L - 6.00 unit-not-recognized',
       );
     });
 
@@ -127,7 +127,7 @@ void main() {
           region: RegionPreset.europe,
           low: bound(70, 'mg/dL'),
         ),
-        'Reference Range: > 3.89 mmol/L',
+        'Reference Range: > 3.88 mmol/L',
       );
     });
   });
