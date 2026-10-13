@@ -27,13 +27,13 @@ String? formatFhirReferenceRange({
 
   if (low != null && high != null) {
     if (low.unit == high.unit) {
-      return '\${low.value.toStringAsFixed(2)} - '
-          '\${high.value.toStringAsFixed(2)} \${low.unit}';
+      return '${low.value.toStringAsFixed(2)} - '
+          '${high.value.toStringAsFixed(2)} ${low.unit}';
     }
     // Do not incorrectly label mixed (or only partially converted) units.
-    return '\${low.value.toStringAsFixed(2)} \${low.unit} - '
-        '\${high.value.toStringAsFixed(2)} \${high.unit}';
+    return '${low.value.toStringAsFixed(2)} ${low.unit} - '
+        '${high.value.toStringAsFixed(2)} ${high.unit}';
   }
-  if (low != null) return '> \${low.value.toStringAsFixed(2)} \${low.unit}';
-  return '< \${high!.value.toStringAsFixed(2)} \${high.unit}';
+  if (low != null) return '> ${low.value.toStringAsFixed(2)} ${low.unit}';
+  return '< ${high!.value.toStringAsFixed(2)} ${high.unit}';
 }
