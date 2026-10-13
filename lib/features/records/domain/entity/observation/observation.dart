@@ -4,6 +4,7 @@ import 'package:fhir_r4/fhir_r4.dart' as fhir_r4;
 import 'package:fhir_r4/fhir_r4.dart';
 import 'package:health_wallet/core/config/constants/region_preset.dart';
 import 'package:health_wallet/core/utils/date_format_utils.dart';
+import 'package:health_wallet/core/utils/fhir_reference_range_formatter.dart';
 import 'package:health_wallet/features/records/domain/entity/i_fhir_resource.dart';
 import 'package:health_wallet/core/data/local/app_database.dart';
 import 'package:health_wallet/features/records/domain/utils/fhir_field_extractor.dart';
@@ -382,41 +383,15 @@ class Observation with _$Observation implements IFhirResource {
 
     if (referenceRange != null && referenceRange!.isNotEmpty) {
       final range = referenceRange!.first;
-      final rawLow = range.low?.value?.valueDouble;
-      final rawHigh = range.high?.value?.valueDouble;
-      // Each bound is still in its original FHIR unit. Never feed the
-      // lower bound's converted display unit into the upper conversion.
-      final lowUnit =
-          (range.low?.unit ?? range.high?.unit)?.toString() ?? '';
-      final highUnit =
-          (range.high?.unit ?? range.low?.unit)?.toString() ?? '';
-
-      final displayLow = rawLow == null
-          ? null
-          : FhirFieldExtractor.convertQuantityForRegion(
-              rawLow, lowUnit, region);
-      final displayHigh = rawHigh == null
-          ? null
-          : FhirFieldExtractor.convertQuantityForRegion(
-              rawHigh, highUnit, region);
-
-      String? rangeDisplay;
-      if (displayLow != null && displayHigh != null) {
-        if (displayLow.unit == displayHigh.unit) {
-          rangeDisplay =
-              '${displayLow.value.toStringAsFixed(2)} - ${displayHigh.value.toStringAsFixed(2)} ${displayLow.unit}';
-        } else {
-          // Do not claim a shared unit when only one bound converted.
-          rangeDisplay =
-              '${displayLow.value.toStringAsFixed(2)} ${displayLow.unit} - ${displayHigh.value.toStringAsFixed(2)} ${displayHigh.unit}';
-        }
-      } else if (displayLow != null) {
-        rangeDisplay =
-            '> ${displayLow.value.toStringAsFixed(2)} ${displayLow.unit}';
-      } else if (displayHigh != null) {
-        rangeDisplay =
-            '< ${displayHigh.value.toStringAsFixed(2)} ${displayHigh.unit}';
-      }
+      String? rangeDisplay = formatFhirReferenceRange(
+        lowValue: range.low?.value?.valueDouble,
+        highValue: range.high?.value?.valueDouble,
+        lowSourceUnit: range.low?.unit?.toString(),
+        highSourceUnit: range.high?.unit?.toString(),
+        convert: (value, sourceUnit) =>
+            FhirFieldExtractor.convertQuantityForRegion(
+                value, sourceUnit, region),
+      );
 
       final rangeType =
           FhirFieldExtractor.extractCodeableConceptText(range);
