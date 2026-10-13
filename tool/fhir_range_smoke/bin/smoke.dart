@@ -53,6 +53,7 @@ void main() {
         recordMap((recordMap(input['code'])['coding'] as List).first)['code']);
     final sourceDate = input['effectiveDateTime'] as String;
     final outDate = output['effectiveDateTime'] as String;
+    print('FHIR_TIME ' + id + ' original=' + sourceDate + ' serialized=' + outDate);
     verify('UTC instant ' + id,
         DateTime.parse(sourceDate).isAtSameMomentAs(DateTime.parse(outDate)));
     verify('original local day ' + id,
