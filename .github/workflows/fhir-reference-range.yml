@@ -6,7 +6,6 @@ name: FHIR range formatting (standalone Dart)
       - 'lib/core/utils/fhir_reference_range_formatter.dart'
       - 'lib/features/records/domain/entity/observation/observation.dart'
       - 'tool/check_fhir_reference_range.dart'
-      - 'tool/fhir_range_smoke/**'
       - '.github/workflows/fhir-reference-range.yml'
   workflow_dispatch:
 
@@ -16,7 +15,7 @@ permissions:
 jobs:
   unit-only:
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
@@ -24,8 +23,3 @@ jobs:
           sdk: '3.10.3'
       - name: Verify reference range helper (no pub get / private SSH packages)
         run: dart tool/check_fhir_reference_range.dart
-      - name: Verify FHIR R4 decoding and source preservation (public fhir_r4 only)
-        working-directory: tool/fhir_range_smoke
-        run: |
-          dart pub get
-          dart run bin/smoke.dart

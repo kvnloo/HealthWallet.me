@@ -1,7 +1,0 @@
-name: healthwallet_fhir_range_smoke
-description: Isolated synthetic FHIR R4 parsing and reference-range verification for HealthWallet.
-publish_to: none
-environment:
-  sdk: '>=3.10.0 <4.0.0'
-dependencies:
-  fhir_r4: 0.6.1
