@@ -384,33 +384,38 @@ class Observation with _$Observation implements IFhirResource {
       final range = referenceRange!.first;
       final rawLow = range.low?.value?.valueDouble;
       final rawHigh = range.high?.value?.valueDouble;
-      final rawUnit = range.low?.unit ?? range.high?.unit ?? '';
+      // Each bound is still in its original FHIR unit. Never feed the
+      // lower bound's converted display unit into the upper conversion.
+      final lowUnit =
+          (range.low?.unit ?? range.high?.unit)?.toString() ?? '';
+      final highUnit =
+          (range.high?.unit ?? range.low?.unit)?.toString() ?? '';
 
-      double? displayLow = rawLow;
-      double? displayHigh = rawHigh;
-      String displayUnit = rawUnit.toString();
-
-      if (rawLow != null) {
-        final converted = FhirFieldExtractor.convertQuantityForRegion(
-            rawLow, displayUnit, region);
-        displayLow = converted.value;
-        displayUnit = converted.unit;
-      }
-      if (rawHigh != null) {
-        final converted = FhirFieldExtractor.convertQuantityForRegion(
-            rawHigh, displayUnit, region);
-        displayHigh = converted.value;
-        displayUnit = converted.unit;
-      }
+      final displayLow = rawLow == null
+          ? null
+          : FhirFieldExtractor.convertQuantityForRegion(
+              rawLow, lowUnit, region);
+      final displayHigh = rawHigh == null
+          ? null
+          : FhirFieldExtractor.convertQuantityForRegion(
+              rawHigh, highUnit, region);
 
       String? rangeDisplay;
       if (displayLow != null && displayHigh != null) {
-        rangeDisplay =
-            '${displayLow.toStringAsFixed(2)} - ${displayHigh.toStringAsFixed(2)} $displayUnit';
+        if (displayLow.unit == displayHigh.unit) {
+          rangeDisplay =
+              '${displayLow.value.toStringAsFixed(2)} - ${displayHigh.value.toStringAsFixed(2)} ${displayLow.unit}';
+        } else {
+          // Do not claim a shared unit when only one bound converted.
+          rangeDisplay =
+              '${displayLow.value.toStringAsFixed(2)} ${displayLow.unit} - ${displayHigh.value.toStringAsFixed(2)} ${displayHigh.unit}';
+        }
       } else if (displayLow != null) {
-        rangeDisplay = '> ${displayLow.toStringAsFixed(2)} $displayUnit';
+        rangeDisplay =
+            '> ${displayLow.value.toStringAsFixed(2)} ${displayLow.unit}';
       } else if (displayHigh != null) {
-        rangeDisplay = '< ${displayHigh.toStringAsFixed(2)} $displayUnit';
+        rangeDisplay =
+            '< ${displayHigh.value.toStringAsFixed(2)} ${displayHigh.unit}';
       }
 
       final rangeType =
