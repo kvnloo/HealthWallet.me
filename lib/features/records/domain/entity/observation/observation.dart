@@ -4,6 +4,7 @@ import 'package:fhir_r4/fhir_r4.dart' as fhir_r4;
 import 'package:fhir_r4/fhir_r4.dart';
 import 'package:health_wallet/core/config/constants/region_preset.dart';
 import 'package:health_wallet/core/utils/date_format_utils.dart';
+import 'package:health_wallet/core/utils/fhir_reference_range_formatter.dart';
 import 'package:health_wallet/features/records/domain/entity/i_fhir_resource.dart';
 import 'package:health_wallet/core/data/local/app_database.dart';
 import 'package:health_wallet/features/records/domain/utils/fhir_field_extractor.dart';
@@ -382,36 +383,15 @@ class Observation with _$Observation implements IFhirResource {
 
     if (referenceRange != null && referenceRange!.isNotEmpty) {
       final range = referenceRange!.first;
-      final rawLow = range.low?.value?.valueDouble;
-      final rawHigh = range.high?.value?.valueDouble;
-      final rawUnit = range.low?.unit ?? range.high?.unit ?? '';
-
-      double? displayLow = rawLow;
-      double? displayHigh = rawHigh;
-      String displayUnit = rawUnit.toString();
-
-      if (rawLow != null) {
-        final converted = FhirFieldExtractor.convertQuantityForRegion(
-            rawLow, displayUnit, region);
-        displayLow = converted.value;
-        displayUnit = converted.unit;
-      }
-      if (rawHigh != null) {
-        final converted = FhirFieldExtractor.convertQuantityForRegion(
-            rawHigh, displayUnit, region);
-        displayHigh = converted.value;
-        displayUnit = converted.unit;
-      }
-
-      String? rangeDisplay;
-      if (displayLow != null && displayHigh != null) {
-        rangeDisplay =
-            '${displayLow.toStringAsFixed(2)} - ${displayHigh.toStringAsFixed(2)} $displayUnit';
-      } else if (displayLow != null) {
-        rangeDisplay = '> ${displayLow.toStringAsFixed(2)} $displayUnit';
-      } else if (displayHigh != null) {
-        rangeDisplay = '< ${displayHigh.toStringAsFixed(2)} $displayUnit';
-      }
+      String? rangeDisplay = formatFhirReferenceRange(
+        lowValue: range.low?.value?.valueDouble,
+        highValue: range.high?.value?.valueDouble,
+        lowSourceUnit: range.low?.unit?.toString(),
+        highSourceUnit: range.high?.unit?.toString(),
+        convert: (value, sourceUnit) =>
+            FhirFieldExtractor.convertQuantityForRegion(
+                value, sourceUnit, region),
+      );
 
       final rangeType =
           FhirFieldExtractor.extractCodeableConceptText(range);
