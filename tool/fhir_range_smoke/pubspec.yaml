@@ -4,4 +4,4 @@ publish_to: none
 environment:
   sdk: '>=3.10.0 <4.0.0'
 dependencies:
-  fhir_r4: 0.4.2
+  fhir_r4: 0.4.4
