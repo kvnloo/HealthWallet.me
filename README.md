@@ -97,7 +97,9 @@ Then open `http://localhost:9090` and create an account. This prepares local sto
 
 1. Generate an access token in your FastenHealth dashboard
 2. Scan the QR code with HealthWallet
-3. Verify that records **already present** in the configured backend are accessible in HealthWallet; do not assume this step retrieves new records from an EHR. If syncing fails, check the existing [iPhone sync report](https://github.com/LifeValue/HealthWallet.me/issues/68).
+3. Verify that records **already present** in the configured backend are accessible in HealthWallet; do not assume this step retrieves new records from an EHR.
+
+**Known older iOS sync error:** On HealthWallet 1.2.1, “Cannot delete the demo data source” was traced to the app’s demo-source deletion guard ([report and diagnosis #68](https://github.com/LifeValue/HealthWallet.me/issues/68)). The maintainer confirmed a fix for v1.3.0 in the [currently open release PR #69](https://github.com/LifeValue/HealthWallet.me/pull/69); check the installed app version before troubleshooting that specific error. This is separate from Fasten Onprem's discontinued direct EHR retrieval.
 
 <div align="center">
   <img src="assets/readme/generate_qr_code.gif" alt="QR Code Sync Demo" width="500" style="border-radius: 8px;">
