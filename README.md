@@ -7,8 +7,8 @@
 ### Your medical records. On your phone. Under your control.
 
 **Open-source, offline-first health record manager with on-device AI.**
-Connects to **52,000+ US healthcare providers** via FHIR R4.
-Scans paper documents with a local LLM — **your data never leaves your device.**
+Organizes FHIR R4 health records locally. New EHR connections require a separately supported retrieval service.
+Scans paper documents with an on-device LLM; **optional sync or sharing transfers records** to your chosen destination.
 
 [![iOS App Store](https://img.shields.io/badge/App_Store-000000?style=for-the-badge&logo=apple&logoColor=white)](https://apps.apple.com/app/healthwallet-me/id6748325588)
 [![Google Play](https://img.shields.io/badge/Google_Play-3DDC84?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.techstackapps.healthwallet)
@@ -42,8 +42,8 @@ Scans paper documents with a local LLM — **your data never leaves your device.
 
 **What makes it different:**
 
-- **On-device AI** — Scan paper documents and the built-in LLM extracts structured FHIR resources locally. No cloud. No uploads. No data leaks.
-- **52,000+ providers** — Connect to US healthcare systems through FHIR R4 APIs via a **self-hosted** [FastenHealth](https://github.com/fastenhealth/fasten-onprem) backend.
+- **On-device AI** — Document scanning and FHIR extraction run locally. Optional record sync and proximity sharing are separate features that transfer selected records.
+- **FHIR-compatible record management** — Organize and view health records locally. [Fasten Onprem](https://github.com/fastenhealth/fasten-onprem) remains a storage/visualization option, but [no longer retrieves new EHR records directly](https://github.com/fastenhealth/fasten-onprem/issues/629).
 - **Truly offline** — Full access to all your records without internet. Sync when you're ready.
 - **Proximity sharing** — Share records face-to-face via AirDrop-style transfer. No intermediary server.
 - **International Patient Summary (IPS)** — Export a globally recognized health summary for travel or emergencies.
@@ -56,7 +56,7 @@ Scans paper documents with a local LLM — **your data never leaves your device.
 | Feature | Description |
 |---------|-------------|
 | **AI Scan** | Photograph or import medical documents; the on-device LLM extracts patient info, encounters, medications, allergies, and lab results into structured FHIR records |
-| **Aggregate** | Sync records from 52,000+ hospitals, clinics, and labs through FHIR R4 APIs |
+| **Aggregate** | Sync records from configured, compatible sources; direct EHR retrieval is **not** supported by Fasten Onprem |
 | **Organize** | Browse all records — conditions, medications, immunizations, lab results, clinical notes — in one place |
 | **Share** | **Cross-platform** proximity sharing — transfer records between **iOS and Android** devices, no internet needed. Data is **view-only** on the receiver side — never stored, **screenshots blocked** |
 | **Export** | Generate an **International Patient Summary** PDF or add emergency info to **Apple/Google Wallet** |
@@ -77,7 +77,9 @@ Scans paper documents with a local LLM — **your data never leaves your device.
 
 ### Set Up Your Self-Hosted Backend
 
-The backend ([FastenHealth](https://github.com/fastenhealth/fasten-onprem)) aggregates medical records from healthcare providers and syncs them to your phone.
+[Fasten Onprem](https://github.com/fastenhealth/fasten-onprem) is a self-hosted storage and visualization layer for medical records already available to it. **It no longer offers direct connections to hospital or clinic EHRs**, per [Fasten's maintainer announcement](https://github.com/fastenhealth/fasten-onprem/issues/629). The steps below set up an Onprem instance; **they do not retrieve new records from healthcare providers**.
+
+Fasten's supported direct-EHR retrieval product is **Fasten Connect**, which is separate from Onprem. These instructions do **not** establish that HealthWallet integrates with Fasten Connect or that a new provider connection will work.
 
 **Prerequisites:** [Docker](https://docs.docker.com/get-docker/)
 
@@ -89,13 +91,15 @@ chmod +x ./set_env.sh && \
 docker compose up -d
 ```
 
-Then open `http://localhost:9090`, create an account, and you're ready.
+Then open `http://localhost:9090` and create an account. This prepares local storage/access, **not a new EHR connection**. Confirm the service's setup and supported import options before adding records.
 
 ### Connect the App to Your Backend
 
 1. Generate an access token in your FastenHealth dashboard
 2. Scan the QR code with HealthWallet
-3. Your records sync automatically
+3. Verify that records **already present** in the configured backend are accessible in HealthWallet; do not assume this step retrieves new records from an EHR.
+
+**Known older iOS sync error:** On HealthWallet 1.2.1, “Cannot delete the demo data source” was traced to the app’s demo-source deletion guard ([report and diagnosis #68](https://github.com/LifeValue/HealthWallet.me/issues/68)). The maintainer confirmed a fix for v1.3.0, tracked in [release PR #69](https://github.com/LifeValue/HealthWallet.me/pull/69); check the installed app version before troubleshooting that specific error. This is separate from Fasten Onprem's discontinued direct EHR retrieval.
 
 <div align="center">
   <img src="assets/readme/generate_qr_code.gif" alt="QR Code Sync Demo" width="500" style="border-radius: 8px;">
